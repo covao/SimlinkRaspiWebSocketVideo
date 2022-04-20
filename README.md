@@ -12,5 +12,5 @@ Simulink & Raspberry Pi Video Example using WebSocket
 ### Hardware
 - Raspberry Pi ([Supported Hardware](https://jp.mathworks.com/hardware-support/raspberry-pi-simulink.html))
 - Camera Device
-### eference
+### Reference
 - p5.js Javascript library (https://p5js.org/)
