@@ -1,5 +1,5 @@
 [![View Simulink & Raspberry Pi WebSocket Video Example on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://jp.mathworks.com/matlabcentral/fileexchange/110390-simulink-raspberry-pi-websocket-video-example)
-# Simulink-Raspberry Pi WebSocket Video Example
+# Simulink & Raspberry Pi WebSocket Video Example
  Simulink & Raspberry Pi Video Example using WebSocket 
 
 ![SimulinkRaspoWebSocketDemo](img/simulinkraspiwebsocketvideo.gif)
