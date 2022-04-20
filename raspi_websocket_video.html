@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js"></script>
+<script>
+
+var HostIP = '192.168.1.107:9137'; //Your RaspberryPi IP address
+
+function setup() {
+  tmp = createDiv(' Simulink & Raspberry Pi WebSocket Video Example');
+  tmp.style('font-size','32px');
+
+  createDiv('[Raspberry Pi IP Address]:[Port]');
+  Inp = createInput(HostIP);
+  Inp.elt.addEventListener('keypress', myInputEvent);
+
+  openWebSocket();  // connect to server:
+  canv=createCanvas(400, 400);
+  canv.position(0,200);
+
+  RecieveCounter = 0;// Recieve Counter
+  RecieveText = '';//Recieve JSON format Text
+  RecieveVal = 0; //Recieve Value
+
+  CamWidth = 160;
+  CamHeight = 120;
+  img = createImage(CamWidth, CamHeight);
+  img.loadPixels();
+
+  frameRate(10);
+}
+
+function draw() {
+  background("#FFFFFF");
+
+  textSize(16);
+  text("Recieve Counter="+RecieveCounter, 0, 20);
+  image(img, 30, 50, CamWidth*4,CamHeight*4);//Scale x4
+}
+
+function openWebSocket() {
+  socket = new WebSocket('ws://' + HostIP);
+  socket.onmessage = readMessage;
+}
+
+function readMessage(event) {
+  ReceieveText = event.data;
+  rdata = JSON.parse(ReceieveText);
+  RecieveVal = rdata.Signal[0].Value;
+
+  let offset=img.height*img.width;
+  let i=0;
+  for (let y = 0; y < img.height; y++) {
+    for (let x = 0; x < img.width; x++) {
+      img.set(x, y, [RecieveVal[i], RecieveVal[i+offset], RecieveVal[i+offset*2], 255]);
+      i++;
+    }
+  }
+  img.updatePixels();
+  RecieveCounter++;
+}
+
+function sendMessage(s){
+  if(socket.readyState==1){
+    socket.send(s);
+  }else if(socket.readyState==3){
+    openWebSocket();//Re open
+  }
+}
+
+function myInputEvent(e) {// Change IP Address
+  if (e.keyCode === 13) { // Press Enter
+    HostIP=Inp.value();
+    openWebSocket();
+  }
+}
+
+</script>
+</head>
+<body>
+</body>
+</html>
+
